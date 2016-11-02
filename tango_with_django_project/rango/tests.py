@@ -77,11 +77,10 @@ class IndexViewTests(TestCase):
         add_category(cat_name, 1, 1)
         slug = slugify(cat_name)
 
-        url = '/category/{slug}/'.format(slug=slug)
+        url = '/rango/category/{slug}/'.format(slug=slug)
 
-        #response = self.client.get(url)
-        response = self.client.get(reverse('show_category',
-                                    kwargs={'category_name_slug': slug}))
+        response = self.client.get(url)
+
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='rango/category.html')
 
