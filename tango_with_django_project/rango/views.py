@@ -10,12 +10,18 @@ from rango.forms import UserForm, UserProfileForm
 
 
 def index(request):
+    request.session.set_test_cookie()
+
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
     context_dict = {'categories': category_list, 'pages': page_list}
     return render(request, 'rango/index.html', context_dict)
 
 def about(request):
+    if request.session.test_cookie_worked():
+        print('TEST COOKIE WORKED!')
+        request.session.delete_test_cookie()
+         
     context_dict = {'aboutmessage': "This website will be nice and running soon!"}
     return render(request, 'rango/about.html', context=context_dict)
 
@@ -33,6 +39,7 @@ def show_category(request, category_name_slug):
 
     return render(request, 'rango/category.html', context_dict)
 
+@login_required
 def add_category(request):
     form = CategoryForm()
 
@@ -116,7 +123,7 @@ def user_login(request):
             else:
                 return HttpResponse('Your Rango account is disabled.')
         else:
-            print('Invalid login details: {0} and {1}.'.format(username, password))
+            print('Invalid login details: {0} or {1}.'.format(username, password))
             return HttpResponse('Invalid login details.')
     else:
         return render(request, 'rango/login.html', {})
