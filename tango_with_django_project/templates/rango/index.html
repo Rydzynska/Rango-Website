@@ -1,41 +1,53 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
 
+{% block title_block %}
+    Home Page
+{% endblock %}
+
 {% block body_block %}
-    <h1>Rango says...</h1>
+<div class="jumbotron">
     {% if user.is_authenticated %}
-        howdy {{ user.username }}!
+    <h2 class="display-3">Welcome, {{ user.username }}!</h2>
+        <p>View the most liked pages and most viewed categories.</p>
+        <p>You can add pages and new categories.</p>
     {% else %}
-        hey there partner!
+        <h2 class="display-3">Welcome!</h2>
+        <p>View the most liked pages and most viewed categories added by others.</p>
+        <p>If you would like to add a category or page, register or sign in.</p>
+        <p><a class="btn btn-lg btn-primary" href="{% url 'auth_login'%}" role="button">Sign in</a>
+           <a class="btn btn-lg btn-success" href="{% url 'registration_register'%}" role="button">Sign up</a></p>
     {% endif %}
-        
-    </div>
-    <div>
-    <h3>Most Liked Categories</h3>
+</div>
+
+<div class="row marketing">
+<div class="col-lg-6">
+    <h4>Most Liked Categories</h4>
+    <p>
     {% if categories %}
-    <ul>
-        {% for category in categories %}
-        <li>
-            <a href="{% url 'show_category' category.slug %}">{{ category.name }}</a></li>
-        {% endfor %}
-    </ul>
+        <ul>
+    {% for category in categories %}
+            <li><a href="{% url 'show_category' category.slug %}">{{ category.name }}</a></li>
+    {% endfor %}
+        </ul>
     {% else %}
         <strong>There are no categories present.</strong>
     {% endif %}
-    </div>    
-
-    <div>
-    <h3>Most Viewed Pages</h3>
+    </p>
+</div>
+<div class="col-lg-6">
+    <h4>Most Viewed Pages</h4>
+    <p>
     {% if pages %}
-    <ul>
-        {% for page in pages %}
-        <li>
-            <a href="{{ page.url }}">{{ page.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+        <ul>
+    {% for page in pages %}
+            <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+    {% endfor %}
+        </ul>
+    {% else %}
+        <strong>There are no categories present.</strong>
     {% endif %}
-    </div>
-    <img src="{% static 'images/rango_frog.png' %}"
-            alt="Picture of Rango" style='width:30%'/>
+    </p>
+</div>
+</div>
 {% endblock %}
