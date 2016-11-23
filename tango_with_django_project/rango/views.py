@@ -10,7 +10,6 @@ from rango.forms import CategoryForm, PageForm
 from rango.forms import UserForm, UserProfileForm
 from django.template import RequestContext
 
-
 def index(request):
     request.session.set_test_cookie()
 
@@ -105,7 +104,7 @@ def register_profile(request):
             user_profile = form.save(commit=False)
             user_profile.user = request.user
             user_profile.save()
-            return redirect('index')
+            return redirect('profile', user_profile.user)
         else:
             print(form.errors)
 
@@ -135,3 +134,10 @@ def profile(request, username):
 
     return render(request, 'rango/profile.html',
             {'userprofile': userprofile, 'selecteduser': user, 'form': form})
+
+
+from registration.backends.simple.views import RegistrationView
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self, user):
+        return reverse('register_profile')

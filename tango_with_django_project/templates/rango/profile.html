@@ -21,7 +21,8 @@
       <form method="post" action="." enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-      <input type="submit" value="Update" />
+      <input type="submit" class="btn btn-sm btn-success" value="Update" />
+      <input type="button" class="btn btn-sm btn-success" onclick="location.href='{% url 'auth_password_change' %}';" value="Change password"/>
       </form>
       {% else %}
             <p><strong>Website:</strong> <a href="{{userprofile.website}}">
