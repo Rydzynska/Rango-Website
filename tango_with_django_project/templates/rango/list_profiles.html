@@ -20,7 +20,7 @@
                                 width="64"
                                 alt="{{ userprofile.user.username }}" />
                         {% else %}
-                        <img width="64" height="64" src="http://lorempixel.com/64/64/abstract/"/>
+                        <img width="64" height="64" src="http://lorempixel.com/64/64/abstract/?{{ forloop.counter }}"/>
                         {% endif %}
                         <a href="{% url 'profile' userprofile.user.username %}">{{ userprofile.user.username }}</a>
                     </h4>
