@@ -29,5 +29,9 @@ urlpatterns = [
         views.profile, 
         name='profile'),
 
+    url(r'^profiles/$', 
+        views.list_profiles, 
+        name='list_profiles'),
+
 ]
 
