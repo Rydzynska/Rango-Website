@@ -2,4 +2,5 @@
 {% block body_block %}
     <h1>Registration Complete</h1>
     <p>You are now registered</p>
+    <p>You may complete your <a href="{% url 'profile' user.username %}">profile</a></p>
 {% endblock %}
