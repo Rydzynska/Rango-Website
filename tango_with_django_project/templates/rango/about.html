@@ -8,12 +8,8 @@
 {% block body_block %}
 <h1>About this page</h1>
 <div>
-    This tutorial has been put together by Agnieszka <br />
+    This page gathers the most popular websites about programming and organizes them under categories. Currently you can view pages and categories, and log in to add categories or pages. Currently working on user profile and 'likes'. <br />
     <strong>{{ aboutmessage }}</strong><br />
 </div>
-<div>
-    <img src="{% static 'images/zen.jpg' %}"
-        alt="Zen picture" style='width:30%'/>
-    <img src="{{ MEDIA_URL }}cat.jpg"
-        alt="Picture of a cat" style='width:30%'/>
+
 {% endblock %}
