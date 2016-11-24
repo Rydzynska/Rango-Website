@@ -166,4 +166,4 @@ def like_category(request):
             else:
                 return HttpResponse('You have already liked this category')
 
-    return HttpResponse(category.likes)
+    return HttpResponse(str(category.likes) + ' people like this page')
