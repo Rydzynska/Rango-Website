@@ -33,5 +33,8 @@ urlpatterns = [
         views.list_profiles, 
         name='list_profiles'),
 
+    url(r'^like/$', 
+        views.like_category,
+        name='like_category'),
 ]
 

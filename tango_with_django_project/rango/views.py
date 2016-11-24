@@ -148,3 +148,20 @@ def list_profiles(request):
 
     return render(request, 'rango/list_profiles.html', 
         {'userprofile_list': userprofile_list})
+
+@login_required
+def like_category(request):
+    category_id = None
+
+    if request.method == 'GET':
+        category_id = request.GET['category_id']
+        likes = 0
+        if category_id:
+            category = Category.objects.get(id=int(category_id))
+            if category:
+                likes = category.likes + 1
+                category.likes = likes
+                category.save()
+
+    return HttpResponse(likes)
+
