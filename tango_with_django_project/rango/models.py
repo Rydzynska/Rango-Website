@@ -8,6 +8,7 @@ class Category(models.Model):
     views = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
     slug = models.SlugField(unique=True)
+    voters = models.ManyToManyField(User, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

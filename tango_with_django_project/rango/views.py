@@ -155,13 +155,15 @@ def like_category(request):
 
     if request.method == 'GET':
         category_id = request.GET['category_id']
-        likes = 0
-        if category_id:
-            category = Category.objects.get(id=int(category_id))
-            if category:
-                likes = category.likes + 1
-                category.likes = likes
+    if category_id:
+        category = Category.objects.get(id=int(category_id))
+        user_votes = category.voters.filter(id=request.user.id).count()
+        if category:
+            if (user_votes == 0):
+                category.likes += 1
+                category.voters.add(request.user)
                 category.save()
+            else:
+                return HttpResponse('You have already liked this category')
 
-    return HttpResponse(likes)
-
+    return HttpResponse(category.likes)
