@@ -9,6 +9,7 @@ from rango.models  import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm
 from rango.forms import UserForm, UserProfileForm
 from django.template import RequestContext
+from registration.backends.simple.views import RegistrationView
 
 def index(request):
     request.session.set_test_cookie()
@@ -29,14 +30,18 @@ def about(request):
 def show_category(request, category_name_slug):
     context_dict = {}
 
-    try:
-        category = Category.objects.get(slug=category_name_slug)
-        pages = Page.objects.filter(category=category)
-        context_dict['pages'] = pages
-        context_dict['category'] = category
-    except Category.DoesNotExist:
-        context_dict['category'] = None
-        context_dict['pages'] = None
+    if request.method == 'GET':
+        try:
+            category = Category.objects.get(slug=category_name_slug)
+            user = User.objects.get(id=request.user.id)
+            liked = category.is_liked(user)
+            context_dict['is_liked'] = liked
+            pages = Page.objects.filter(category=category)
+            context_dict['pages'] = pages
+            context_dict['category'] = category
+        except Category.DoesNotExist:
+            context_dict['category'] = None
+            context_dict['pages'] = None
 
     return render(request, 'rango/category.html', context_dict)
 
@@ -137,11 +142,11 @@ def profile(request, username):
             {'userprofile': userprofile, 'selecteduser': user, 'form': form})
 
 
-from registration.backends.simple.views import RegistrationView
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
         return reverse('register_profile')
+
 
 def list_profiles(request):
     userprofile_list = UserProfile.objects.all()
@@ -157,13 +162,9 @@ def like_category(request):
         category_id = request.GET['category_id']
     if category_id:
         category = Category.objects.get(id=int(category_id))
-        user_votes = category.voters.filter(id=request.user.id).count()
         if category:
-            if (user_votes == 0):
-                category.likes += 1
-                category.voters.add(request.user)
-                category.save()
-            else:
-                return HttpResponse('You have already liked this category')
+            category.likes += 1
+            category.voters.add(request.user.id)
+            category.save()
 
-    return HttpResponse(str(category.likes) + ' people like this page')
+    return HttpResponse(category.likes)

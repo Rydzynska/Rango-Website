@@ -20,6 +20,11 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
 
+    def is_liked(self, user):
+        if user in self.voters.all():
+            return True
+        return False
+
     def __str__(self):
         return self.name
 

@@ -9,9 +9,13 @@
     {% if category %}
         <h1>{{ category.name }}</h1>
         <div>
-            <span id="like_count">{{ category.likes }} people like this category</span>
+            <strong id="like_count">{{ category.likes }}</strong> people like this category
         {% if user.is_authenticated %}
+        {% if not is_liked %}
             <button id="likes" data-catid="{{ category.id }}" class="btn btn-sm btn-primary" type="button">Like</button>
+        {% else %}
+            <button id="likes" data-catid="{{ category.id }}" class="btn btn-sm btn-primary" type="button" disabled="disabled">Liked</button>
+        {% endif %}
         {% endif %}
         </div>
         
